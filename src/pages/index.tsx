@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import * as Tabs from '@radix-ui/react-tabs'
+
 import { CreateTodoForm } from '@/client/components/CreateTodoForm'
 import { TodoList } from '@/client/components/TodoList'
 
@@ -17,6 +20,8 @@ import { TodoList } from '@/client/components/TodoList'
  */
 
 const Index = () => {
+  const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
+
   return (
     <main className="mx-auto w-[480px] pt-12">
       <div className="rounded-12 bg-white p-8 shadow-sm">
@@ -24,8 +29,49 @@ const Index = () => {
           Todo App
         </h1>
 
+        <Tabs.Root
+          className="pt-10"
+          defaultValue="all"
+          onValueChange={(value) =>
+            setFilter(value as 'all' | 'pending' | 'completed')
+          }
+        >
+          <Tabs.List className="flex space-x-2">
+            <Tabs.Trigger
+              value="all"
+              className={`rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
+                filter === 'all'
+                  ? 'bg-gray-500 text-white'
+                  : 'border border-gray-300 bg-white text-gray-500'
+              }`}
+            >
+              All
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              value="pending"
+              className={`rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
+                filter === 'pending'
+                  ? 'bg-gray-500 text-white'
+                  : 'border border-gray-300 bg-white text-gray-500'
+              }`}
+            >
+              Pending
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              value="completed"
+              className={`rounded-full px-4 py-2 text-sm font-medium focus:outline-none ${
+                filter === 'completed'
+                  ? 'bg-gray-500 text-white'
+                  : 'border border-gray-300 bg-white text-gray-500'
+              }`}
+            >
+              Completed
+            </Tabs.Trigger>
+          </Tabs.List>
+        </Tabs.Root>
+
         <div className="pt-10">
-          <TodoList />
+          <TodoList filter={filter} />
         </div>
 
         <div className="pt-10">
